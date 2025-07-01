@@ -1,4 +1,5 @@
 # auto-cpufreq
+
 [![Linux Build](https://github.com/AdnanHodzic/auto-cpufreq/actions/workflows/build-linux.yml/badge.svg?event=push)](https://github.com/AdnanHodzic/auto-cpufreq/actions/workflows/build-linux.yml)
 [![Nix Flake](https://github.com/AdnanHodzic/auto-cpufreq/actions/workflows/build-nix.yaml/badge.svg?event=push)](https://github.com/AdnanHodzic/auto-cpufreq/actions/workflows/build-nix.yaml)
 
@@ -13,7 +14,6 @@ For tl;dr folks:
 [Youtube: auto-cpufreq - tool demo](https://www.youtube.com/watch?v=QkYRpVEEIlg)
 
 [![](https://img.youtube.com/vi/QkYRpVEEIlg/0.jpg)](https://www.youtube.com/watch?v=QkYRpVEEIlg)
-
 
 If you're having a problem with auto-cpufreq, before ([submitting an issue](https://github.com/AdnanHodzic/auto-cpufreq/issues)), it is strongly recommended to use the **[auto-cpufreq-genAI-chatbot](https://foolcontrol.org/?p=4903)** to get an immediate answer to your question.
 
@@ -65,7 +65,7 @@ Example of `auto-cpufreq --stats` CLI output
 - [Battery charging thresholds](#battery-charging-thresholds)
   - [Supported Devices](#supported-devices)
   - [Battery config](#battery-config)
-  - [Ignoring power supplies](#Ignoring-power-supplies)
+  - [Ignoring power supplies](#ignoring-power-supplies)
 - [Troubleshooting](#troubleshooting)
   - [AUR](#aur)
 - [Discussion](#discussion)
@@ -125,7 +125,7 @@ cd auto-cpufreq && sudo ./auto-cpufreq-installer
 
 ### Snap Store
 
-*Please note: while all [auto-cpufreq >= v2.0 CLI functionality](https://www.youtube.com/watch?v=SPGpkZ0AZVU&t=295s) will work as intended, [the GUI won't be available on Snap package installs](http://foolcontrol.org/wp-content/uploads/2023/10/auto-cpufreq-v2-snap-deprecation-notice.png) due to [Snap package confinement limitations](https://forum.snapcraft.io/t/pkexec-not-found-python-gtk-gnome-app/36579). Hence, please consider installing auto-cpufreq using [auto-cpufreq-installer](#auto-cpufreq-installer)*.
+_Please note: while all [auto-cpufreq >= v2.0 CLI functionality](https://www.youtube.com/watch?v=SPGpkZ0AZVU&t=295s) will work as intended, [the GUI won't be available on Snap package installs](http://foolcontrol.org/wp-content/uploads/2023/10/auto-cpufreq-v2-snap-deprecation-notice.png) due to [Snap package confinement limitations](https://forum.snapcraft.io/t/pkexec-not-found-python-gtk-gnome-app/36579). Hence, please consider installing auto-cpufreq using [auto-cpufreq-installer](#auto-cpufreq-installer)_.
 
 auto-cpufreq is available on the [Snap Store](https://snapcraft.io/auto-cpufreq) or via CLI:
 
@@ -134,6 +134,7 @@ sudo snap install auto-cpufreq
 ```
 
 **Please note:**
+
 - Make sure [snapd](https://snapcraft.io/docs/installing-snapd) is installed and `snap version` is >= 2.44 for `auto-cpufreq` to fully work due to [recent snapd changes](https://github.com/snapcore/snapd/pull/8127).
 
 - Fedora users will [encounter the following error](https://twitter.com/killyourfm/status/1291697985236144130) due to `cgroups v2` [being in development](https://github.com/snapcore/snapd/pull/7825). This problem can be resolved by either running `sudo snap run auto-cpufreq` after the snap installation or by using the [auto-cpufreq-installer](#auto-cpufreq-installer) which doesn't have this issue.
@@ -142,17 +143,18 @@ sudo snap install auto-cpufreq
 
 [![AUR package](https://repology.org/badge/version-for-repo/aur/auto-cpufreq.svg)](https://aur.archlinux.org/packages/auto-cpufreq)
 
-The AUR [Release Package](https://aur.archlinux.org/packages/auto-cpufreq) is currently being maintained by [MusicalArtist12](https://github.com/MusicalArtist12), [liljaylj](https://github.com/liljaylj), and [parmjotsinghrobot](https://github.com/parmjotsinghrobot). 
+The AUR [Release Package](https://aur.archlinux.org/packages/auto-cpufreq) is currently being maintained by [MusicalArtist12](https://github.com/MusicalArtist12), [liljaylj](https://github.com/liljaylj), and [parmjotsinghrobot](https://github.com/parmjotsinghrobot).
 
 **Notices**
 
-- The [Git Package](https://aur.archlinux.org/packages/auto-cpufreq-git) is seperately maintained and was last updated on version 1.9.6. 
+- The [Git Package](https://aur.archlinux.org/packages/auto-cpufreq-git) is seperately maintained and was last updated on version 1.9.6.
 - The build process links to `/usr/share/` instead of `/usr/local/share/`
-- The daemon installer provided does not work, instead start the daemon with 
+- The daemon installer provided does not work, instead start the daemon with
 
-``` 
+```
 # systemctl enable --now auto-cpufreq 
 ```
+
 - The GNOME Power Profiles daemon is [automatically disabled by auto-cpufreq-installer](https://github.com/AdnanHodzic/auto-cpufreq#1-power_helperpy-script-snap-package-install-only) due to it's conflict with auto-cpufreq.service. However, this doesn't happen with AUR installs, which can lead to problems (e.g., [#463](https://github.com/AdnanHodzic/auto-cpufreq/issues/463)) if not masked manually.
   - Open a terminal and run `sudo systemctl mask power-profiles-daemon.service` (then `enable` and `start` the auto-cpufreq.service if you haven't already).
 - The TuneD daemon(enabled by default with Fedora 41) is [automatically disabled by auto-cpufreq-installer](https://github.com/AdnanHodzic/auto-cpufreq#1-power_helperpy-script-snap-package-install-only) due to it's conflict with auto-cpufreq.service.
@@ -163,7 +165,7 @@ New versions of auto-cpufreq were recently added to GURU, Gentoo's official comm
 
 In order to build auto-cpufreq, it is necessary to add & sync GURU repository first. Adding ~amd64 keyword is also needed to unmask the package.
 
-``` 
+```
 # echo "sys-power/auto-cpufreq ~amd64" >> /etc/portage/package.accept_keywords
 # eselect repository enable guru
 # emaint sync -r guru
@@ -175,7 +177,8 @@ In order to build auto-cpufreq, it is necessary to add & sync GURU repository fi
 - The build process links to `/usr/share/` instead of `/usr/local/share/`
 - The build works on both systemd/OpenRC systems (both systemd and OpenRC will have a service called auto-cpufreq which can be started automatically)
 - The daemon installer provided does work, but it is RECOMMENDED to install the daemon with:
-``` 
+
+```
 # systemctl enable --now auto-cpufreq 
 # rc-update add auto-cpufreq default && rc-service auto-cpufreq start
 ```
@@ -188,7 +191,7 @@ In order to build auto-cpufreq, it is necessary to add & sync GURU repository fi
 
 This repo contains a flake that exposes a NixOS Module that manages and offers options for auto-cpufreq. To use it, add the flake as an input to your `flake.nix` file and enable the module:
 
-```nix 
+```nix
 # flake.nix
 
 {
@@ -213,7 +216,9 @@ This repo contains a flake that exposes a NixOS Module that manages and offers o
     } 
 }
 ```
+
 Then you can enable the program in your `configuration.nix` file:
+
 ```nix
 # configuration.nix
 
@@ -235,6 +240,7 @@ Then you can enable the program in your `configuration.nix` file:
     # ---Snip---
 }
 ```
+
 </details>
 
 <details>
@@ -242,6 +248,7 @@ Then you can enable the program in your `configuration.nix` file:
 <br>
 
 There is a nixpkg available, but it is more prone to being outdated, whereas the flake pulls from the latest commit. You can install it in your `configuration.nix` and enable the system service:
+
 ```nix
 # configuration.nix
 
@@ -253,11 +260,13 @@ environment.systemPackages = with pkgs; [
 services.auto-cpufreq.enable = true;
 # ---Snip---
 ```
+
 </details>
 
 ### Installation (development mode only)
 
 - If you have `poetry` installed:
+
   ```bash
   git clone https://github.com/AdnanHodzic/auto-cpufreq.git
   cd auto-cpufreq
@@ -266,6 +275,7 @@ services.auto-cpufreq.enable = true;
   ```
 
 - Alternatively, we can use an editable pip install for development purposes:
+
   ```bash
   git clone https://github.com/AdnanHodzic/auto-cpufreq.git
   cd auto-cpufreq
@@ -273,6 +283,7 @@ services.auto-cpufreq.enable = true;
   pip3 install -e .
   auto-cpufreq
   ```
+
 - Regularly run `poetry update` if you get any inconsistent lock file issues.
 
 ## Post-installation
@@ -285,9 +296,9 @@ auto-cpufreq makes all decisions automatically based on various factors such as 
 
 ### 1: power_helper.py script (Snap package install **only**)
 
-When installing auto-cpufreq via [auto-cpufreq-installer](#auto-cpufreq-installer), if it detects the [GNOME Power Profiles service](https://twitter.com/fooctrl/status/1467469508373884933) is running, it will automatically disable it. Otherwise, that daemon will cause conflicts and various other performance issues. 
+When installing auto-cpufreq via [auto-cpufreq-installer](#auto-cpufreq-installer), if it detects the [GNOME Power Profiles service](https://twitter.com/fooctrl/status/1467469508373884933) is running, it will automatically disable it. Otherwise, that daemon will cause conflicts and various other performance issues.
 
-However, when auto-cpufreq is installed as a Snap package it's running as part of a container with limited permissions, hence it's *highly recommended* to disable the GNOME Power Profiles daemon using the `power_helper.py` script.
+However, when auto-cpufreq is installed as a Snap package it's running as part of a container with limited permissions, hence it's _highly recommended_ to disable the GNOME Power Profiles daemon using the `power_helper.py` script.
 
 **Please Note:**<br>
 The [`power_helper.py`](https://github.com/AdnanHodzic/auto-cpufreq/blob/master/auto_cpufreq/power_helper.py) script is located within the auto-cpufreq repo at `auto_cpufreq/power_helper.py`. In order to access it, first clone
@@ -299,9 +310,9 @@ Make sure to have `psutil` & `pyinotify` Python library installed before next st
 
 If you're using Debian based distro install them by running:
 
-`sudo apt install python3-psutil python3-pyinotify` 
+`sudo apt install python3-psutil python3-pyinotify`
 
-or manually using pip, e.g: 
+or manually using pip, e.g:
 
 `sudo pip3 install psutil pyinotify --break-system-packages`
 
@@ -340,6 +351,7 @@ By default, auto-cpufreq does not use a config file. If you wish to configure au
 3. System-wide configuration: `/etc/auto-cpufreq.conf`
 
 #### Example config file contents
+
 ```python
 # settings for when connected to a power source
 [charger]
@@ -429,6 +441,7 @@ turbo = auto
 ```
 
 ## How to run auto-cpufreq
+
 auto-cpufreq should be run with with one of the following options:
 
 - [monitor](#monitor)
@@ -439,7 +452,7 @@ auto-cpufreq should be run with with one of the following options:
 
 - [install](#install---auto-cpufreq-daemon) / [remove](#remove---auto-cpufreq-daemon)
   - Install/remove daemon for (permanent) automatic CPU optimizations
- 
+
 - [install (GUI)](#install---auto-cpufreq-daemon)
   - Install daemon via GUI for (permanent) automatic CPU optimizations
 
@@ -524,7 +537,7 @@ Installing the auto-cpufreq daemon using CLI is as simple as running the followi
 
 After the daemon is installed, `auto-cpufreq` is available as a binary and runs in the background. Its stats can be viewed by running: `auto-cpufreq --stats`
 
-*Please note:* if the daemon is installed within a desktop environment, then its stats and options can be accessed via CLI or GUI. See "Install the daemon using GUI" below for more details.
+_Please note:_ if the daemon is installed within a desktop environment, then its stats and options can be accessed via CLI or GUI. See "Install the daemon using GUI" below for more details.
 
 **Install the daemon using GUI**
 
@@ -540,7 +553,7 @@ After that, the full auto-cpufreq GUI is available:
 
 <img src="https://github.com/user-attachments/assets/9c7715c4-16b7-4a5c-86be-4c390276d9e8" width="640" alt="The full auto-cpufreq GUI"/>
 
-*Please note:* after the daemon is installed (by any method), its stats and options are accessible via both CLI and GUI.
+_Please note:_ after the daemon is installed (by any method), its stats and options are accessible via both CLI and GUI.
 
 **auto-cpufreq daemon service**
 
@@ -570,7 +583,7 @@ The auto-cpufreq daemon, its systemd service, and all its persistent changes can
 
 This does, in part, the equivalent of `systemctl stop auto-cpufreq && systemctl disable auto-cpufreq`, but the above command should be used instead of using `systemctl`.
 
-*Please note:* after the daemon is removed, the auto-cpufreq GUI and desktop entry (icon) are also removed.
+_Please note:_ after the daemon is removed, the auto-cpufreq GUI and desktop entry (icon) are also removed.
 
 ### Stats
 
@@ -590,7 +603,7 @@ Useful if you prefer Bluetooth to be enabled at boot time, especially after inst
 
 ## Battery charging thresholds
 
-***Please note:** [Original implementor](https://github.com/AdnanHodzic/auto-cpufreq/pull/637) is looking for user input & testing to further improve this functionality. If you would like to help in this process, please refer to [Looking for developers and co-maintainers](https://github.com/AdnanHodzic/auto-cpufreq/#looking-for-developers-and-co-maintainers)*.
+_**Please note:** [Original implementor](https://github.com/AdnanHodzic/auto-cpufreq/pull/637) is looking for user input & testing to further improve this functionality. If you would like to help in this process, please refer to [Looking for developers and co-maintainers](https://github.com/AdnanHodzic/auto-cpufreq/#looking-for-developers-and-co-maintainers)_.
 
 As of [v2.2.0](https://github.com/AdnanHodzic/auto-cpufreq/releases/tag/v2.2.0), battery charging thresholds can be set in the config file. This enforces your battery to start and stop charging at defined values.
 
@@ -604,9 +617,11 @@ As of [v2.2.0](https://github.com/AdnanHodzic/auto-cpufreq/releases/tag/v2.2.0),
 **To request that your device be supported, please open an [issue](https://github.com/AdnanHodzic/auto-cpufreq/issues/new). In your issue, make us aware of the driver that works with your laptop**
 
 ### Battery config
+
 Edit the config at `/etc/auto-cpufreq.conf`
 
 Example config for battery ([already part of example config file](https://github.com/AdnanHodzic/auto-cpufreq/#example-config-file-contents))
+
 ```
 [battery]
 enable_thresholds = true
@@ -624,7 +639,7 @@ add `ideapad_laptop_conservation_mode = true` to your `auto-cpufreq.conf` file
 
 As you may know, for some laptop models you can only decide to limit battery charging but can not set the limit value. The limit value is set by the manufacturer in the system (generally 60% and sometimes 80%). Also, you can not set the value of start charging.
 
-This limit value is not always accessible for users to avoid changing it, but you can try looking in some of these paths : 
+This limit value is not always accessible for users to avoid changing it, but you can try looking in some of these paths :
 
 ```
 cat /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/charge_control_end_threshold
@@ -641,6 +656,7 @@ start_threshold = 20
 stop_threshold = 1
 
 ```
+
 start_threshold = 20 (should be present with a valid number but it's ignored)
 
 stop_threshold = 1 (to stop charging the battery at the limit value 60% or 80%)
@@ -668,6 +684,7 @@ xboxctrl = {the xbox controler power supply name}
 ## Troubleshooting
 
 **Q:** If after installing auto-cpufreq you're (still) experiencing:
+
 - high CPU temperatures
 - CPU not scaling to minimum/maximum frequencies
 - suboptimal CPU performance
@@ -732,9 +749,9 @@ Once you have made the necessary changes to the `cmdline` file, you can update i
 
 ### AUR
 
-- If the AUR installer does not work for your system, fallback to `auto-cpufreq-installer` and open an issue. 
+- If the AUR installer does not work for your system, fallback to `auto-cpufreq-installer` and open an issue.
 
-## Discussion:
+## Discussion
 
 - Blogpost: [auto-cpufreq - Automatic CPU speed & power optimizer for Linux](http://foolcontrol.org/?p=3124)
 
@@ -754,9 +771,11 @@ If auto-cpufreq helped you out and you find it useful, show your appreciation by
 [Become a sponsor to Adnan Hodzic on Github](https://github.com/sponsors/AdnanHodzic) to acknowledge my efforts and help project's further open source development.
 
 ##### PayPal
+
 [![paypal](https://www.paypalobjects.com/en_US/NL/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7AHCP5PU95S4Y&item_name=Contribution+for+work+on+auto-cpufreq&currency_code=EUR&source=url)
 
 ##### BitCoin
+
 [bc1qlncmgdjyqy8pe4gad4k2s6xtyr8f2r3ehrnl87](bitcoin:bc1qlncmgdjyqy8pe4gad4k2s6xtyr8f2r3ehrnl87)
 
 [![bitcoin](https://foolcontrol.org/wp-content/uploads/2019/08/btc-donate-displaylink-debian.png)](bitcoin:bc1qlncmgdjyqy8pe4gad4k2s6xtyr8f2r3ehrnl87)

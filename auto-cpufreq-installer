@@ -1,7 +1,8 @@
-sudo auto-cpufreq --install#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # auto-cpufreq-installer:
 # auto-cpufreq source code based installer
+# After installation, run: sudo auto-cpufreq --install
 
 cd "$(dirname "$(readlink -f "$0")")" || exit 1
 
@@ -56,7 +57,7 @@ function manual_install {
   echo "auto-cpufreq --help"
 
   echo; printf "%0.s─" $(seq $COLOUMNS); echo
-  
+
   echo "Consider creating a feature request to add support for your distro:"
   echo "https://github.com/AdnanHodzic/auto-cpufreq/issues/new"; echo
   echo "Make sure to include following information:"; echo
@@ -76,9 +77,9 @@ function tool_install {
     header "Setting up Python environment"
   }
 
-  if [ -f /etc/debian_version ]; then  
+  if [ -f /etc/debian_version ]; then
     detected_distro "Debian based"
-    VERSION=$(cat /etc/debian_version) 
+    VERSION=$(cat /etc/debian_version)
 
     # install necessary libgirepository debian package dependencies
     # https://github.com/AdnanHodzic/auto-cpufreq/pull/826#issuecomment-2794549837
@@ -128,7 +129,7 @@ function tool_install {
   elif [ -f /etc/arch-release ]; then
     detected_distro "Arch Linux based"
     pacman -S --noconfirm --needed python python-pip python-setuptools base-devel dmidecode gobject-introspection gtk3 gcc
-    
+
 elif [ -f /etc/os-release ];then
     . /etc/os-release
     case $ID in
@@ -167,17 +168,17 @@ elif [ -f /etc/os-release ];then
 
 
   # debian specific PyGObject Installation
-  if [ -f /etc/debian_version ]; then  
-    VERSION=$(cat /etc/debian_version | cut -d'.' -f1)  
+  if [ -f /etc/debian_version ]; then
+    VERSION=$(cat /etc/debian_version | cut -d'.' -f1)
 
-    if [[ "$VERSION" =~ ^12(\.[0-9]+)?$ ]]; then 
+    if [[ "$VERSION" =~ ^12(\.[0-9]+)?$ ]]; then
         python3 -m pip install PyGObject==3.50.0
     fi
   fi
   python3 -m pip install PyGObject
 
   header "Installing auto-cpufreq tool"
-  
+
   git config --global --add safe.directory $(pwd)
   python -m pip install .
 
@@ -195,7 +196,7 @@ elif [ -f /etc/os-release ];then
 
   desktop-file-install --dir=$APPLICATIONS_PATH scripts/$AUTO_CPUFREQ_GTK_DESKTOP_FILE
   update-desktop-database $APPLICATIONS_PATH
-  
+
   header "auto-cpufreq tool successfully installed"
   echo "For list of options, run:"
   echo "auto-cpufreq --help"; echo
